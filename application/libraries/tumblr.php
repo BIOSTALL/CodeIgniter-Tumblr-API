@@ -332,16 +332,15 @@ class Tumblr {
     		
     		foreach ($xml->posts[0] as $post) { // loop through posts
     			
-    			array_push($posts, array(
-    				"title" => (string) $post->{'regular-title'},
-    				"body" => (string) $post->{'regular-body'}
-    			));
-    			
     			if (count($post->attributes())) {
 		    		foreach($post->attributes() as $a => $b) {
 					    $posts[$i][$a] = (string) $b;
 					}
     			}
+    			
+    			foreach($post as $a => $b) {
+					if (!is_array($b)) $posts[$i][$a] = (string) $b; else $posts[$i][$a] = $b;
+				}
 				
 				$i++;
     			
