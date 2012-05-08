@@ -339,7 +339,25 @@ class Tumblr {
     			}
     			
     			foreach($post as $a => $b) {
-					if (!is_array($b)) $posts[$i][$a] = (string) $b; else $posts[$i][$a] = $b;
+
+                    // type cast from simple xml element to string if appropriate
+                    $value = null;
+                    if (!is_array($b)){
+                        $value = (string) $b;
+                    }else{
+                        $value = $b;
+                    }
+
+                    // convert an existing node to a sub array and append this value
+                    // or not
+                    if(isset($posts[$i][$a])){
+                        if(! is_array($posts[$i][$a]))
+                            $posts[$i][$a] = array($posts[$i][$a]);
+
+                        $posts[$i][$a][] = $value;
+                    }else{
+                        $posts[$i][$a] = $value;
+                    }
 				}
 				
 				$i++;
